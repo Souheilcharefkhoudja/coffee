@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Coffee Station — Organisateur professionnel pour gobelets, sucre, serviettes. Démontable, premium. Livraison gratuite 58 wilayas.">
+  <meta name="theme-color" content="#1a0f08">
+  <title>Coffee Station — Organisateur barista · Livraison gratuite</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,500;0,700;0,800;1,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: #1a0f08;
+      color: #f5e6d3;
+      min-height: 100vh;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      line-height: 1.55;
+    }
+
+    /* ─────────── Page background — espresso with warm vignette ─────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at top, rgba(212,165,116,0.08), transparent 60%),
+        radial-gradient(ellipse at bottom right, rgba(111,78,55,0.15), transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    /* ═══════════════════════════════════════
+       HERO SECTION
+       ═══════════════════════════════════════ */
+    .cs-hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+      padding: 32px;
+      background:
+        linear-gradient(180deg, rgba(42,24,16,0.7), rgba(26,15,8,0.7)),
+        radial-gradient(circle at 30% 0%, rgba(212,165,116,0.12), transparent 60%);
+      border: 1px solid #3d2817;
+      border-radius: 24px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 40px 80px -30px rgba(0,0,0,0.6);
+    }
+
+    /* Steam wisp decoration in the corner */
+    .cs-hero::after {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(212,165,116,0.15), transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    /* ─────────── Image gallery ─────────── */
+    .cs-gallery { width: 100%; position: relative; z-index: 1; }
+
+    .cs-image {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: #0d0805;
+      border: 1px solid #3d2817;
+      border-radius: 18px;
+      overflow: hidden;
+      position: relative;
+      box-shadow:
+        0 30px 60px -20px rgba(0,0,0,0.7),
+        0 0 0 1px rgba(212,165,116,0.06);
+    }
+    .cs-image img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      transition: opacity 0.3s ease, transform 0.6s ease;
+    }
+    .cs-image:hover img { transform: scale(1.03); }
+
+    .cs-ribbon {
+      position: absolute;
+      top: 16px; left: 16px;
+      background: #f5e6d3;
+      color: #1a0f08;
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 7px 14px;
+      border-radius: 999px;
+      z-index: 2;
+      box-shadow: 0 8px 20px -6px rgba(0,0,0,0.4);
+    }
+
+    .cs-thumbs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .cs-thumb {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: #0d0805;
+      border: 1px solid #3d2817;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      padding: 0;
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+    .cs-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .cs-thumb:hover { transform: translateY(-2px); border-color: #6f4e37; }
+    .cs-thumb.active {
+      border-color: #d4a574;
+      box-shadow: 0 0 0 2px rgba(212,165,116,0.3);
+    }
+
+    /* ─────────── Order form ─────────── */
+    .cs-form { margin: 0; padding: 0; position: relative; z-index: 1; }
+
+    .cs-form-inner {
+      padding: 32px 28px;
+      background: linear-gradient(180deg, #2a1810, #1f1209);
+      border: 1px solid #3d2817;
+      border-radius: 18px;
+      box-shadow: 0 30px 60px -20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(245,230,211,0.04);
+    }
+
+    .cs-brand {
+      text-align: center;
+      margin-bottom: 4px;
+    }
+    .cs-brand-script {
+      font-family: 'Dancing Script', cursive;
+      font-size: 56px;
+      font-weight: 700;
+      color: #f5e6d3;
+      line-height: 0.95;
+      letter-spacing: -1px;
+      display: inline-block;
+    }
+    .cs-brand-sub {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #d4a574;
+      margin-top: 6px;
+      font-weight: 600;
+    }
+
+    /* Free shipping pill */
+    .cs-shipping {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 12px;
+      color: #1a0f08;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin: 18px auto 24px;
+      padding: 9px 18px;
+      background: linear-gradient(135deg, #f5e6d3, #d4a574);
+      background-size: 200% 100%;
+      border-radius: 999px;
+      width: fit-content;
+      font-weight: 700;
+      box-shadow: 0 10px 30px -8px rgba(212,165,116,0.4);
+      animation: cs-shimmer 4s linear infinite;
+    }
+    .cs-shipping::before {
+      content: '☕';
+      font-size: 14px;
+    }
+    @keyframes cs-shimmer {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* ── Fields ── */
+    .cs-field { margin-bottom: 14px; }
+    .cs-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .cs-row .cs-field { margin-bottom: 0; }
+
+    .cs-form label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #b89a78;
+      margin-bottom: 6px;
+    }
+    .cs-form label .optional {
+      text-transform: none;
+      color: #6f5a45;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    .cs-form input,
+    .cs-form select {
+      width: 100%;
+      padding: 13px 14px;
+      background: #0d0805;
+      border: 1px solid #3d2817;
+      border-radius: 10px;
+      color: #f5e6d3;
+      font-family: inherit;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    .cs-form select {
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='none' stroke='%23d4a574' stroke-width='1.8' stroke-linecap='round' d='M1 1l5 5 5-5'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+      cursor: pointer;
+    }
+    .cs-form select:disabled { opacity: 0.5; cursor: not-allowed; }
+    .cs-form select option { background: #0d0805; color: #f5e6d3; }
+    .cs-form input:focus,
+    .cs-form select:focus {
+      border-color: #d4a574;
+      box-shadow: 0 0 0 3px rgba(212,165,116,0.15);
+      background: #050302;
+    }
+    .cs-form input::placeholder { color: #5a4332; }
+
+    /* Quantity buttons */
+    .cs-qty { display: flex; gap: 8px; }
+    .cs-qty button {
+      flex: 1;
+      padding: 13px 8px;
+      background: #0d0805;
+      border: 1px solid #3d2817;
+      border-radius: 10px;
+      color: #f5e6d3;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .cs-qty button:hover { border-color: #6f4e37; color: #d4a574; }
+    .cs-qty button.active {
+      background: linear-gradient(135deg, #d4a574, #b8895f);
+      border-color: #d4a574;
+      color: #1a0f08;
+      box-shadow: 0 8px 20px -6px rgba(212,165,116,0.4);
+    }
+
+    /* Total */
+    .cs-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px;
+      background: linear-gradient(135deg, #0d0805, #1a0f08);
+      border: 1px solid #3d2817;
+      border-radius: 12px;
+      margin: 18px 0 16px;
+      position: relative;
+      overflow: hidden;
+    }
+    .cs-total::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: linear-gradient(180deg, #d4a574, #6f4e37);
+    }
+    .cs-total-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #b89a78;
+    }
+    .cs-total-amount {
+      font-family: 'Playfair Display', serif;
+      font-size: 30px;
+      font-weight: 700;
+      color: #f5e6d3;
+      letter-spacing: 0.5px;
+    }
+    .cs-total-amount .da {
+      font-size: 14px;
+      color: #d4a574;
+      font-weight: 500;
+      letter-spacing: 1px;
+      margin-left: 4px;
+    }
+
+    /* Submit */
+    .cs-submit {
+      width: 100%;
+      padding: 18px;
+      background: linear-gradient(135deg, #f5e6d3, #d4a574);
+      background-size: 200% 100%;
+      border: none;
+      border-radius: 12px;
+      color: #1a0f08;
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 15px 35px -10px rgba(212,165,116,0.4);
+      position: relative;
+      overflow: hidden;
+    }
+    .cs-submit::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      transition: left 0.6s;
+    }
+    .cs-submit:hover {
+      background-position: 100% 0;
+      transform: translateY(-2px);
+      box-shadow: 0 20px 40px -10px rgba(212,165,116,0.5);
+    }
+    .cs-submit:hover::before { left: 100%; }
+    .cs-submit:active { transform: translateY(0); }
+    .cs-submit:disabled { opacity: 0.7; cursor: wait; }
+
+    /* Success state */
+    .cs-success { display: none; text-align: center; padding: 30px 0; }
+    .cs-success.show { display: block; animation: cs-fadeIn 0.4s ease; }
+    @keyframes cs-fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .cs-success .cs-check {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f5e6d3, #d4a574);
+      display: grid; place-items: center;
+      margin: 0 auto 16px;
+      color: #1a0f08;
+      font-size: 32px;
+      font-weight: bold;
+      box-shadow: 0 15px 35px -10px rgba(212,165,116,0.5);
+      animation: cs-pop 0.5s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    @keyframes cs-pop {
+      0%   { transform: scale(0); }
+      100% { transform: scale(1); }
+    }
+    .cs-success h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 700;
+      margin: 0 0 8px;
+      color: #f5e6d3;
+    }
+    .cs-success p { color: #b89a78; font-size: 14px; margin: 0; }
+
+    /* ═══════════════════════════════════════
+       FEATURES SECTION
+       ═══════════════════════════════════════ */
+    .cs-features {
+      margin-top: 60px;
+      text-align: center;
+    }
+    .cs-features-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 700;
+      color: #f5e6d3;
+      margin: 0 0 8px;
+      letter-spacing: -0.5px;
+    }
+    .cs-features-title em {
+      font-style: italic;
+      color: #d4a574;
+    }
+    .cs-features-sub {
+      font-size: 13px;
+      color: #b89a78;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin: 0 0 36px;
+    }
+    .cs-features-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .cs-feature {
+      padding: 28px 20px;
+      background: linear-gradient(180deg, #2a1810, #1f1209);
+      border: 1px solid #3d2817;
+      border-radius: 16px;
+      text-align: left;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+    .cs-feature:hover {
+      transform: translateY(-4px);
+      border-color: #6f4e37;
+    }
+    .cs-feature-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(212,165,116,0.2), rgba(111,78,55,0.2));
+      border: 1px solid #3d2817;
+      display: grid;
+      place-items: center;
+      margin-bottom: 16px;
+      font-size: 20px;
+    }
+    .cs-feature h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #f5e6d3;
+      margin: 0 0 6px;
+    }
+    .cs-feature p {
+      font-size: 13px;
+      color: #b89a78;
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    /* ═══════════════════════════════════════
+       TRUST BAR
+       ═══════════════════════════════════════ */
+    .cs-trust {
+      margin-top: 40px;
+      padding: 22px 28px;
+      background: rgba(245,230,211,0.03);
+      border: 1px solid #3d2817;
+      border-radius: 14px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    .cs-trust-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      color: #b89a78;
+    }
+    .cs-trust-item strong {
+      display: block;
+      color: #f5e6d3;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .cs-trust-icon {
+      width: 36px; height: 36px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: rgba(212,165,116,0.15);
+      display: grid;
+      place-items: center;
+      font-size: 16px;
+    }
+
+    /* ═══════════════════════════════════════
+       FOOTER
+       ═══════════════════════════════════════ */
+    .cs-footer {
+      margin-top: 60px;
+      padding: 30px 0;
+      text-align: center;
+      color: #6f5a45;
+      font-size: 12px;
+      letter-spacing: 1px;
+      border-top: 1px solid #3d2817;
+    }
+    .cs-footer-brand {
+      font-family: 'Dancing Script', cursive;
+      font-size: 24px;
+      color: #d4a574;
+      margin-bottom: 4px;
+    }
+
+    /* ═══════════════════════════════════════
+       MOBILE (≤ 760px)
+       ═══════════════════════════════════════ */
+    @media (max-width: 760px) {
+      .page { padding: 16px 12px; }
+
+      .cs-hero {
+        grid-template-columns: 1fr;
+        gap: 22px;
+        padding: 18px;
+        border-radius: 16px;
+      }
+      .cs-form-inner { padding: 24px 18px; border-radius: 14px; }
+
+      .cs-brand-script { font-size: 46px; }
+      .cs-brand-sub { font-size: 10px; letter-spacing: 3px; }
+      .cs-shipping { font-size: 11px; padding: 8px 14px; letter-spacing: 1px; }
+      .cs-total-amount { font-size: 26px; }
+      .cs-row { grid-template-columns: 1fr; gap: 14px; }
+      .cs-form label { font-size: 10px; }
+
+      /* iOS zoom prevention */
+      .cs-form input,
+      .cs-form select { font-size: 16px; padding: 14px; min-height: 48px; }
+
+      /* Bigger tap targets */
+      .cs-qty button { padding: 16px 6px; font-size: 15px; min-height: 50px; }
+      .cs-submit { padding: 18px; font-size: 16px; min-height: 56px; letter-spacing: 1.5px; }
+
+      .cs-thumbs { gap: 10px; margin-top: 10px; }
+      .cs-ribbon { top: 12px; left: 12px; font-size: 10px; padding: 5px 10px; }
+
+      /* Disable hover transforms on touch */
+      .cs-thumb:hover, .cs-submit:hover, .cs-qty button:hover,
+      .cs-feature:hover { transform: none; }
+      .cs-image:hover img { transform: none; }
+
+      /* Features stack 2-col on mobile */
+      .cs-features { margin-top: 44px; }
+      .cs-features-title { font-size: 28px; }
+      .cs-features-sub { font-size: 11px; margin-bottom: 24px; }
+      .cs-features-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .cs-feature { padding: 22px 16px; }
+      .cs-feature h4 { font-size: 16px; }
+      .cs-feature p { font-size: 12px; }
+
+      /* Trust bar stacks 2-col on mobile */
+      .cs-trust {
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        padding: 18px;
+      }
+      .cs-trust-item { font-size: 12px; }
+      .cs-trust-icon { width: 32px; height: 32px; font-size: 14px; }
+
+      .cs-success { padding: 24px 0; }
+      .cs-success .cs-check { width: 56px; height: 56px; font-size: 28px; }
+      .cs-success h3 { font-size: 22px; }
+    }
+
+    /* Tiny phones */
+    @media (max-width: 380px) {
+      .cs-brand-script { font-size: 40px; }
+      .cs-features-grid, .cs-trust { grid-template-columns: 1fr; }
+      .cs-qty button { font-size: 13px; padding: 14px 4px; }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .cs-shipping { animation: none; }
+      .cs-success.show, .cs-success .cs-check { animation: none; }
+      .cs-image img, .cs-thumb, .cs-submit, .cs-feature { transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+<main class="page">
+
+  <!-- ═══════════════════════════════════════
+       HERO — Image gallery + Order form
+       ═══════════════════════════════════════ -->
+  <section class="cs-hero">
+
+    <!-- Image gallery -->
+    <div class="cs-gallery">
+      <div class="cs-image">
+        <span class="cs-ribbon">★ Édition limitée</span>
+        <img id="csMainImage" src="coffee-1.png" alt="Coffee Station — en utilisation">
+      </div>
+      <div class="cs-thumbs">
+        <button type="button" class="cs-thumb active" data-src="coffee-1.png" aria-label="En utilisation">
+          <img src="coffee-1.png" alt="Coffee Station avec gobelets">
+        </button>
+        <button type="button" class="cs-thumb" data-src="coffee-2.png" aria-label="Modulaire">
+          <img src="coffee-2.png" alt="Coffee Station démontable">
+        </button>
+      </div>
+    </div>
+
+    <!-- Order form -->
+    <form class="cs-form" id="csForm" onsubmit="return csSubmit(event)">
+      <div class="cs-form-inner">
+
+        <div class="cs-brand">
+          <span class="cs-brand-script">Coffee</span>
+          <span class="cs-brand-sub">Station · Organisateur Barista</span>
+        </div>
+
+        <div class="cs-shipping">Livraison gratuite — 58 wilayas</div>
+
+        <div id="csFields">
+
+          <div class="cs-field">
+            <label for="cs-name">Nom complet</label>
+            <input type="text" id="cs-name" required placeholder="Votre nom et prénom"
+                   autocomplete="name" autocapitalize="words">
+          </div>
+
+          <div class="cs-field">
+            <label for="cs-phone">Téléphone</label>
+            <input type="tel" id="cs-phone" required placeholder="0X XX XX XX XX"
+                   inputmode="tel" autocomplete="tel" pattern="[0-9 ]{10,}">
+          </div>
+
+          <div class="cs-row">
+            <div class="cs-field">
+              <label for="cs-wilaya">Wilaya</label>
+              <select id="cs-wilaya" required>
+                <option value="" disabled selected>— Choisir —</option>
+              </select>
+            </div>
+            <div class="cs-field">
+              <label for="cs-commune">Commune</label>
+              <select id="cs-commune" required disabled>
+                <option value="" disabled selected>Choisir la wilaya</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="cs-field">
+            <label for="cs-address">Adresse <span class="optional">(optionnel)</span></label>
+            <input type="text" id="cs-address" placeholder="Rue, numéro, point de repère"
+                   autocomplete="street-address">
+          </div>
+
+          <div class="cs-field">
+            <label>Quantité</label>
+            <div class="cs-qty">
+              <button type="button" data-q="1" class="active">1 Station</button>
+              <button type="button" data-q="2">2 Stations</button>
+              <button type="button" data-q="3">3 Stations</button>
+            </div>
+          </div>
+
+          <div class="cs-total">
+            <span class="cs-total-label">Total</span>
+            <span class="cs-total-amount" id="cs-total">8 500<span class="da">DA</span></span>
+          </div>
+
+          <button type="submit" class="cs-submit">Commander maintenant</button>
+        </div>
+
+        <div class="cs-success" id="csSuccess">
+          <div class="cs-check">✓</div>
+          <h3>Commande reçue</h3>
+          <p>Nous vous contacterons dans les plus brefs délais.</p>
+        </div>
+
+      </div>
+    </form>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       FEATURES SECTION
+       ═══════════════════════════════════════ -->
+  <section class="cs-features">
+    <h2 class="cs-features-title">Pensé pour les <em>professionnels</em></h2>
+    <p class="cs-features-sub">Détails qui font la différence</p>
+
+    <div class="cs-features-grid">
+      <div class="cs-feature">
+        <div class="cs-feature-icon">☕</div>
+        <h4>6 compartiments</h4>
+        <p>Gobelets, agitateurs, sucre, serviettes — tout en place, tout à portée de main.</p>
+      </div>
+      <div class="cs-feature">
+        <div class="cs-feature-icon">🔧</div>
+        <h4>Démontable</h4>
+        <p>Conception modulaire à assembler. Facile à transporter, simple à ranger.</p>
+      </div>
+      <div class="cs-feature">
+        <div class="cs-feature-icon">🪵</div>
+        <h4>MDF Premium</h4>
+        <p>Bois noir mat, finition professionnelle, robuste pour un usage quotidien intensif.</p>
+      </div>
+      <div class="cs-feature">
+        <div class="cs-feature-icon">📐</div>
+        <h4>Multi-usage</h4>
+        <p>Idéal pour cafés, restaurants, food trucks, événements, ou même la maison.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       TRUST BAR
+       ═══════════════════════════════════════ -->
+  <section class="cs-trust">
+    <div class="cs-trust-item">
+      <div class="cs-trust-icon">🚚</div>
+      <div><strong>Livraison 24-72h</strong>Partout en Algérie</div>
+    </div>
+    <div class="cs-trust-item">
+      <div class="cs-trust-icon">💵</div>
+      <div><strong>Paiement à la livraison</strong>En toute confiance</div>
+    </div>
+    <div class="cs-trust-item">
+      <div class="cs-trust-icon">✅</div>
+      <div><strong>Qualité garantie</strong>Produit testé & approuvé</div>
+    </div>
+    <div class="cs-trust-item">
+      <div class="cs-trust-icon">📞</div>
+      <div><strong>Support 7j/7</strong>Une question? Appelez-nous</div>
+    </div>
+  </section>
+
+  <footer class="cs-footer">
+    <div class="cs-footer-brand">Coffee Station</div>
+    <div>© 2026 — Tous droits réservés</div>
+  </footer>
+
+</main>
+
+<script>
+(function() {
+
+  // ═══ DATA: 58 wilayas + communes ═══
+  const wilayas = [
+    {code:"01",name:"Adrar"},{code:"02",name:"Chlef"},{code:"03",name:"Laghouat"},
+    {code:"04",name:"Oum El Bouaghi"},{code:"05",name:"Batna"},{code:"06",name:"Béjaïa"},
+    {code:"07",name:"Biskra"},{code:"08",name:"Béchar"},{code:"09",name:"Blida"},
+    {code:"10",name:"Bouira"},{code:"11",name:"Tamanrasset"},{code:"12",name:"Tébessa"},
+    {code:"13",name:"Tlemcen"},{code:"14",name:"Tiaret"},{code:"15",name:"Tizi Ouzou"},
+    {code:"16",name:"Alger"},{code:"17",name:"Djelfa"},{code:"18",name:"Jijel"},
+    {code:"19",name:"Sétif"},{code:"20",name:"Saïda"},{code:"21",name:"Skikda"},
+    {code:"22",name:"Sidi Bel Abbès"},{code:"23",name:"Annaba"},{code:"24",name:"Guelma"},
+    {code:"25",name:"Constantine"},{code:"26",name:"Médéa"},{code:"27",name:"Mostaganem"},
+    {code:"28",name:"M'Sila"},{code:"29",name:"Mascara"},{code:"30",name:"Ouargla"},
+    {code:"31",name:"Oran"},{code:"32",name:"El Bayadh"},{code:"33",name:"Illizi"},
+    {code:"34",name:"Bordj Bou Arréridj"},{code:"35",name:"Boumerdès"},{code:"36",name:"El Tarf"},
+    {code:"37",name:"Tindouf"},{code:"38",name:"Tissemsilt"},{code:"39",name:"El Oued"},
+    {code:"40",name:"Khenchela"},{code:"41",name:"Souk Ahras"},{code:"42",name:"Tipaza"},
+    {code:"43",name:"Mila"},{code:"44",name:"Aïn Defla"},{code:"45",name:"Naâma"},
+    {code:"46",name:"Aïn Témouchent"},{code:"47",name:"Ghardaïa"},{code:"48",name:"Relizane"},
+    {code:"49",name:"Timimoun"},{code:"50",name:"Bordj Badji Mokhtar"},{code:"51",name:"Ouled Djellal"},
+    {code:"52",name:"Béni Abbès"},{code:"53",name:"In Salah"},{code:"54",name:"In Guezzam"},
+    {code:"55",name:"Touggourt"},{code:"56",name:"Djanet"},{code:"57",name:"El M'Ghair"},
+    {code:"58",name:"El Meniaa"}
+  ];
+
+  const communesData = {
+    "01":["Adrar","Tamest","Charouine","Reggane","In Zghmir","Tit","Ksar Kaddour","Sali","Bouda","Timokten","Aougrout","Fenoughil","Tamentit","Zaouiet Kounta"],
+    "02":["Chlef","Tenes","Benairia","El Karimia","Taougrit","Beni Haoua","Sobha","Harchoun","Ouled Fares","Sidi Akkacha","Boukadir","Beni Rached","Talassa","Herenfa","Oued Goussine"],
+    "03":["Laghouat","Ksar El Hirane","El Kihia","Sidi Makhlouf","Hassi R'Mel","Aflou","El Ghicha","Oued Morra","Hassi Delaa","Tadjemout","Tadjrouna","Brida","El Assafia","Kheneg","Gueltat Sidi Saad"],
+    "04":["Oum El Bouaghi","Ain Beida","Ain M'lila","F'Kirina","Ain Babouche","Ksar Sbahi","Dhalaa","Sigus","Ain Diss","Ain Kercha","Meskiana","Souk Naamane","Telerghma","Gosbat","Oued Nini"],
+    "05":["Batna","Ghassira","Maafa","Merouana","Tazoult","N'Gaous","Seggana","Arris","Timgad","Ichmoul","Fesdis","Rahouia","Ain Yagout","Bouzina","Chemora"],
+    "06":["Béjaïa","Amizour","Ferraoun","Taourirt Ighil","Chemini","Taskriout","Tamokra","Draa El Caid","Kherraga","Sidi Aich","El Kseur","Melbou","Akfadou","Toudja","Tifra","Souk El Tenine","Mekla","Boudjellil","Tazmalt"],
+    "07":["Biskra","Ouled Djellal","Sidi Okba","M'Chouneche","El Kantara","Ain Zaatout","Tolga","Zeribet El Oued","El Outaya","Branis","Djemorah","Tanthelik","Ain Naga","Lioua","Lichana"],
+    "08":["Béchar","Meridja","Lahmar","Boukais","Mogheul","Abadla","Taghit","Erg Ferradj","Beni Ounif","Kenadsa","Igli","El Ouata","Tabelbala","Ouled Khoudir","Kerzaz"],
+    "09":["Blida","Boufarik","Bougara","El Affroun","Oued El Alleug","Mouzaia","Meftah","Larbaa","Bouinan","Guerrouaou","Ain Romana","Soumaa","Bouarfa","Chiffa","Ouled Yaich"],
+    "10":["Bouira","Aïn Bessem","Bir Ghbalou","Lakhdaria","El Hachimia","Souk El Khemis","Kadiria","Haizer","Taghzout","M'Chedellah","Ridane","Maala","Aomar","Djebahia","Bouderbala"],
+    "11":["Tamanrasset","Abalessa","Idles","Tazrouk","In Ghar","In Amguel","Aguemoun","Tin Zaouatine","Arak","Foggaret Ezzaouia"],
+    "12":["Tébessa","Bir El Ater","Cheria","Stah Guentis","El Aouinet","El Ogla","Safsaf El Ouesra","Hammamet","Ain Zerga","Negrine","Bir El Mokadem","El Kouif","Morsott","El Ogla Malha","Oum Ali","Ouenza","Ferkane"],
+    "13":["Tlemcen","Sebdou","Ghazaouet","Remchi","Beni Snous","Maghnia","Hennaya","Bensekrane","Ouled Mimoun","Ain Youcef","Bab El Assa","Chetouane","Fellaoucene","Ain Fezza","Aïn Nehala","Marhoum","Amieur","Marsa Ben M'Hidi"],
+    "14":["Tiaret","Medroussa","Ain Bouchekif","Sidi Ali Mellal","Ain Zair","Dahmouni","Rahouia","Sougueur","Mellakou","Ksar Chellala","Frenda","Takhemaret","Hamadia","Serghine","Nadorah"],
+    "15":["Tizi Ouzou","Ain El Hammam","Larba Nath Irathen","Mekla","Beni Douala","Boghni","Draa El Mizan","Ouacif","Azeffoun","Tizi Ghenif","Iferhounene","Bouzguen","Yakouren","Freha","Tadmait","Aghribs","Ifigha","Zekri","Assi Youcef"],
+    "16":["Alger Centre","Sidi M'Hamed","El Madania","Bab El Oued","Bologhine","Casbah","Oued Koriche","Bir Mourad Rais","El Biar","Bouzareah","Birkhadem","El Harrach","Baraki","Oued Smar","Bachdjerrah","Hussein Dey","Kouba","Bourouba","Dar El Beida","Bab Ezzouar","Ben Aknoun","Dely Ibrahim","Hammamet","Rais Hamidou","Djasr Kasentina","El Mouradia","Hydra","Mohammadia","Bordj El Kiffan","El Magharia","Beni Messous","Les Eucalyptus","Birtouta","Tessala El Merdja","Ouled Chebel","Sidi Moussa","Ain Taya","Bordj El Bahri","El Marsa","H'Raoua","Rouiba","Reghaia","Ain Benian","Staoueli","Zeralda","Mahelma","Rahmania","Souidania","Cheraga","Ouled Fayet","El Achour","Draria","Douera","Baba Hassen","Khraicia","Saoula"],
+    "17":["Djelfa","Messaad","Hassi Bahbah","Ain Maabed","Dar Chioukh","Sidi Ladjel","Charef","El Idrissia","Beni Yenni","Guettara","Birine","Ain El Ibel","Hassi El Euch","M'Liliha","Ain Feka"],
+    "18":["Jijel","Taher","El Aouana","Chekfa","Settara","El Milia","Sidi Maarouf","Erraguene","Ziama Mansouriah","El Kennar","Ghebala","Ouled Yahia Khedrouce","Texenna","Djemaa Beni Habibi","Bordj T'har"],
+    "19":["Sétif","El Eulma","Ain Arnat","Guidjel","Beni Aziz","Amoucha","Babor","Ain Oulmene","Bouandas","Tizi N'Bechar","Hammam Guergour","Salah Bey","Bir El Arch","Maoklane","Boutaleb"],
+    "20":["Saïda","Sidi Boubekeur","Ouled Brahim","Tircount","Ain Soltane","Ouled Khaled","Youb","Moulay Larbi","Maamora","Ain Hadjar","Hounet","Sidi Khaled","Sidi Amar","Ain Sekhouna","Thala"],
+    "21":["Skikda","El Hadaik","Azzaba","Ben Azzouz","Collo","Tamalous","Filfila","Sidi Mezghiche","Ain Bouziane","Zerdezas","Ouled Habbaba","Ramdane Djamel","Oued Zitoun","Ouldja Boulballout","Kanoua"],
+    "22":["Sidi Bel Abbès","Tessala","Sidi Brahim","Mostefa Ben Brahim","Telagh","Sidi Ali Boussidi","Maroufia","Sidi Lahcene","Tenira","Moulay Slissen","Mezaourou","Redjem Demouche","Ain Tindamine","Tilmouni","Badredine El Mokrani"],
+    "23":["Annaba","Seraidi","Berrahel","El Hadjar","El Bouni","Ain Berda","Chetaibi","Sidi Amar","Treat","Oued El Aneb","Eulma","El Ain Ragouba"],
+    "24":["Guelma","Hammam Debagh","Bouchegouf","Djeballah Khemissi","Ain Makhlouf","Oued Zenati","Ain Ben Beida","Bouati Mahmoud","Medjez Sfa","Hammam N'Bail","Boumahra Ahmed","Guelaat Bou Sbaa","Nechmaya","Ain Lahdjar","Khezara"],
+    "25":["Constantine","El Khroub","Hamma Bouziane","Ibn Ziad","Zighoud Youcef","Ain Abid","Messaoud Boudjriou","Beni Hamiden","Didouche Mourad","Draa Ben Khedda"],
+    "26":["Médéa","Berrouaghia","Ouzera","El Omaria","Souagui","Ksar El Boukhari","Aziz","Chabounia","Tablat","Mezerana","Tamesguida","Benchicao","Seghouane","Boghar","Sidi Naamane"],
+    "27":["Mostaganem","Ain Nouicy","Hassi Mamach","Stidia","Ain Tedles","Sour","Mesra","Ain Sidi Cherif","Bouguirat","Kheir Eddine","Sidi Lakhdar","Mansourah","Ouled Boughalem","Djidiouia","Sidi Bellater"],
+    "28":["M'Sila","Medjedel","Hammam Dhalaa","Ouled Derradj","Ain El Hadjel","Khoubana","Ouled Addi Guebala","Tarmount","Sidi Ameur","Maadid","Ain El Melh","Beni Ilmane","Oultene","Djebel Messaad","Sidi M'Hamed"],
+    "29":["Mascara","Sig","Bou Henni","El Bordj","Mohammadia","Tighenif","Oued Taria","Ain Fekan","Hachem","Ghriss","Zahana","Hanacha","Maoussa","Oued El Abtal","Ferraguig"],
+    "30":["Ouargla","Hassi Messaoud","N'Goussa","Rouissat","Ain Beida","El Borma","Tebesbest","Nezla","Sidi Slimane","Balidat Ameur","Taibet","Temacine","El Harihira","Megarine"],
+    "31":["Oran","Es Senia","Bir El Djir","Sidi Chami","Gdyel","Marsa","Boufatis","Ain El Turk","El Kala","Arzew","Bethioua","Ain El Kerma","Hassi Ben Okba","Misserghin","Mers El Kebir","Oued Tlelat","Tafraoui","Bousfer","El Ancor"],
+    "32":["El Bayadh","Brezina","Rogassa","El Abiodh Sidi Cheikh","Ghassoul","Boualem","Sidi Ameur","Chellala","Arbaouat","Sidi Slimane","Sidi Tifour","Kef El Ahmar","El Bnoud","Ain El Orak","Cheguig"],
+    "33":["Illizi","Debdeb","Bordj Omar Driss","Tin Fouye Tabankort","In Amenas","Bordj El Haouass"],
+    "34":["Bordj Bou Arréridj","Ras El Oued","Bordj Zemoura","Mansoura","El M'hir","Ben Daoud","El Achir","Ain Taghrout","Sidi Embarek","Belimour","Medjana","Teniet En Nasr","Djaafra","Tixter","Bir Kasdali"],
+    "35":["Boumerdès","Boudouaou","Bordj Menaiel","Issers","Naciria","Thenia","Dellys","Baghlia","Sidi Daoud","Khemis El Khechna","Chabet El Ameur","Taourga","Ouled Hedadj","Zemmouri","Laghata"],
+    "36":["El Tarf","El Kala","Bouhadjar","Ben M'Hidi","El Aioun","Souarekh","Zerizer","Boutheldja","Ain El Assel","Berrihane","Lac des Oiseaux","Oued Zitoun","Hammam Beni Salah","Asfour"],
+    "37":["Tindouf","Oum El Assel"],
+    "38":["Tissemsilt","Theniet El Had","Bordj Emir Abdelkader","Lardjem","Beni Chaib","Ammari","Ouled Bessam","Maacem","Bordj Bounaama","Sidi Slimane","Melaab","Sidi Lantri","Khemisti","Layoune","Youssoufia"],
+    "39":["El Oued","Robbah","Oued El Alenda","Beni Guecha","Nakhla","Guemar","Hamraia","Reguiba","Debila","Magrane","Mih Ouansa","Hassi Khalifa","Trifaoui","Taleb Larbi","Bayadha"],
+    "40":["Khenchela","Kais","El Hamma","Ain Touila","Taouzianat","Baghai","Chelia","Babar","Fais","Djellal","Ouled Rechache","M'Toussa","Bouhmama","El Oueldja","Remila"],
+    "41":["Souk Ahras","Sedrata","Haddada","Mechroha","Ain Soltane","Ouled Drareb","Tiffech","Taoura","Zaarouria","Bir Bouhouche","Madjer","Sidi Fredj","Oum El Adhaim","Kheiter","M'Daourouch"],
+    "42":["Tipaza","Hadjout","Sidi Amar","Gouraya","Cherchell","Damous","Menaceur","Fouka","Bou Ismail","Kolea","Attatba","Ahmar El Ain","Sidi Ghiles","Bou Haroun","Nador"],
+    "43":["Mila","Ferdjioua","Chelghab Laid","Tassadane Haddada","Teleghma","Oued Athmania","Tadjenanet","Grarem Gouga","Terraiibana","Ahmed Rached","Rouached","Aïn Mellouk","Mihoub","Sidi Merouane","Ghebala"],
+    "44":["Aïn Defla","Mekhatria","Bathia","Aïn Bouyahia","Tiberkanine","Khemis Miliana","Hoceinia","Rouina","Boumedfaa","Aïn Lechiakh","Djemaa Ouled Cheikh","Abi El Khasibs","Tacheta Zegagha","Ain Soltane","El Attaf"],
+    "45":["Naâma","Mecheria","Aïn Séfra","Tiout","Sfissifa","Moghrar","Djéniane Bourzeg","Kasdir","El Biodh","Ain Ben Khelil"],
+    "46":["Aïn Témouchent","Hammam Bouhadjar","Aghlal","Ain El Arbaa","Ain Kihel","Beni Saf","Ouled Boudjemaa","Chentouf","Sidi Safi","Terga","Aoubellil","Ain Tolba","Sidi Ben Adda","Hassi El Ghella","Bou Zedjar"],
+    "47":["Ghardaïa","Berriane","Metlili","El Atteuf","Zelfana","Sebseb","Bounoura","Mansoura","Hassi Fehal","Dhayet Bendhahoua","Igrarene","Taghrdait"],
+    "48":["Relizane","Bendaoud","Sidi M'Hamed Ben Ali","El H'Madna","Ain Tarik","Oued Righ","Mediouna","Oued El Djemaa","Mazouna","Ramka","Matmar","Zemmoura","Sidi Khettab","Beni Dergoun","Sidi Lazreg"],
+    "49":["Timimoun","Ouled Said","Tinerkouk","Ksar Kaddour","Metarfa","Talmine","Charouine","Aougrout","Deldoul","Ksabi"],
+    "50":["Bordj Badji Mokhtar","Timiaouine","In Zghmir"],
+    "51":["Ouled Djellal","Sidi Khaled","Ras El Miad","Besbes","Chaiba","Doucen","Beni Ikhlef","M'Liliha"],
+    "52":["Béni Abbès","Tabelbala","Igli","Kerzaz","Ouled Khoudir","Tamtert","Timoudi","Ksar El Maadjed","El Ouata"],
+    "53":["In Salah","In Ghar","Foggaret Ezzaouia","Tin Amzi"],
+    "54":["In Guezzam","Tin Zaouatine"],
+    "55":["Touggourt","Taibet","Temacine","Megarine","El Harihira","Balidat Ameur","M'Naguer","Benaceur","Sidi Slimane","Blidet Amor"],
+    "56":["Djanet","El Mihan","Bordj El Haouass"],
+    "57":["El M'Ghair","Oum Touyour","Sidi Khelil","Still","Djamaa","M'Rara","Tendla","Sidi Amrane","Mih Ouensa"],
+    "58":["El Meniaa","Hassi Fehal","Hassi Gara","Tin El Koum"]
+  };
+
+  // ═══ Image gallery swap ═══
+  const mainImg = document.getElementById('csMainImage');
+  const thumbs  = document.querySelectorAll('.cs-thumb');
+  thumbs.forEach(function(t) {
+    t.addEventListener('click', function() {
+      thumbs.forEach(function(x) { x.classList.remove('active'); });
+      this.classList.add('active');
+      mainImg.style.opacity = '0';
+      setTimeout(function() {
+        mainImg.src = t.dataset.src;
+        mainImg.style.opacity = '1';
+      }, 150);
+    });
+  });
+
+  // ═══ Populate wilaya dropdown ═══
+  const wilayaSel  = document.getElementById('cs-wilaya');
+  const communeSel = document.getElementById('cs-commune');
+
+  wilayas.forEach(function(w) {
+    const o = document.createElement('option');
+    o.value = w.code;
+    o.textContent = w.code + ' — ' + w.name;
+    wilayaSel.appendChild(o);
+  });
+
+  // ═══ Cascading commune dropdown ═══
+  wilayaSel.addEventListener('change', function() {
+    const code = wilayaSel.value;
+    const list = (communesData[code] || []).slice().sort(function(a, b) {
+      return a.localeCompare(b, 'fr');
+    });
+
+    communeSel.innerHTML = '';
+    if (list.length === 0) {
+      communeSel.disabled = true;
+      const o = document.createElement('option');
+      o.value = ''; o.textContent = 'Aucune commune';
+      o.disabled = true; o.selected = true;
+      communeSel.appendChild(o);
+      return;
+    }
+    communeSel.disabled = false;
+    const placeholder = document.createElement('option');
+    placeholder.value = ''; placeholder.textContent = '— Choisir la commune —';
+    placeholder.disabled = true; placeholder.selected = true;
+    communeSel.appendChild(placeholder);
+    list.forEach(function(name) {
+      const o = document.createElement('option');
+      o.value = name; o.textContent = name;
+      communeSel.appendChild(o);
+    });
+  });
+
+  // ═══ Quantity + total ═══
+  const PRICE = 8500;
+  let qty = 1;
+  const qtyBtns = document.querySelectorAll('.cs-qty button');
+  const totalEl = document.getElementById('cs-total');
+
+  qtyBtns.forEach(function(b) {
+    b.addEventListener('click', function() {
+      qtyBtns.forEach(function(x) { x.classList.remove('active'); });
+      this.classList.add('active');
+      qty = parseInt(this.dataset.q);
+      totalEl.innerHTML = (PRICE * qty).toLocaleString('fr-FR') + '<span class="da">DA</span>';
+    });
+  });
+
+  // ═══ Form submit → Google Sheets via Apps Script ═══
+
+  // ▼ PASTE YOUR APPS SCRIPT WEB APP URL HERE ▼
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/PASTE_YOUR_COFFEE_DEPLOYMENT_URL_HERE/exec";
+  // ▲ END URL ▲
+
+  window.csSubmit = function(e) {
+    e.preventDefault();
+
+    const submitBtn    = document.querySelector('.cs-submit');
+    const originalText = submitBtn.textContent;
+    submitBtn.disabled    = true;
+    submitBtn.textContent = '⏳ Envoi en cours...';
+
+    const order = {
+      name:    document.getElementById('cs-name').value,
+      phone:   document.getElementById('cs-phone').value,
+      wilaya:  wilayaSel.options[wilayaSel.selectedIndex].textContent,
+      commune: communeSel.value,
+      address: document.getElementById('cs-address').value,
+      qty:     qty,
+      total:   PRICE * qty
+    };
+
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(order)
+    })
+    .then(function() {
+      document.getElementById('csFields').style.display = 'none';
+      const success = document.getElementById('csSuccess');
+      success.classList.add('show');
+      setTimeout(function() {
+        success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
+    })
+    .catch(function(err) {
+      console.error('Order submit error:', err);
+      submitBtn.disabled    = false;
+      submitBtn.textContent = originalText;
+      alert("Une erreur est survenue. Veuillez réessayer ou nous contacter directement.");
+    });
+
+    return false;
+  };
+
+})();
+</script>
+
+</body>
+</html>
